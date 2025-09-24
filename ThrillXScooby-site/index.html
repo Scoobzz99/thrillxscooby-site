@@ -298,7 +298,6 @@
                 biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">Loading...</td></tr>';
                 pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">Loading...</td></tr>';
                 try {
-                    // *** THIS IS THE ONLY LINE THAT CHANGED ***
                     const response = await fetch('/getLeaderboardData');
                     if (!response.ok) {
                         throw new Error(`API call failed: ${response.status}`);
@@ -307,7 +306,24 @@
                     if (!data || !Array.isArray(data.items)) {
                         throw new Error("Invalid data format from API");
                     }
-                    allPlayersData = data.items;
+                    
+                    // --- START: MANUAL USER INJECTION ---
+                    // To add a static user, change the details in this object.
+                    // The 'value' is the wager amount followed by 18 zeros.
+                    // For example, for $5000, use "5000" + "0".repeat(18).
+                    const staticPlayer = {
+                      username: "mob",
+                      wager: {
+                        value: "39853" + "0".repeat(18),
+                        decimals: 18
+                      }
+                    };
+
+                    // Add the static player to the list from the API
+                    const combinedPlayers = [...data.items, staticPlayer];
+                    allPlayersData = combinedPlayers;
+                    // --- END: MANUAL USER INJECTION ---
+
                     populateTables(allPlayersData);
                 } catch (error) {
                     console.error('Error in fetchAllData:', error);
