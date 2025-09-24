@@ -108,6 +108,7 @@
                     Degen Now
                 </a>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div id="wager-card" class="homepage-card rounded-xl p-8 text-center cursor-pointer flex flex-col">
                     <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Bi-Weekly Wager</h2>
@@ -139,6 +140,17 @@
                     </div>
                 </div>
             </div>
+
+            <!-- VIDEO PLAYER MOVED HERE -->
+            <div class="my-8">
+                <a href="https://t.me/ScoobzCartel" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:shadow-cyan-500/50 transition-shadow duration-300">
+                    <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                        <source src="https://raw.githubusercontent.com/Scoobzz99/thrillxscooby-site/main/ThrillXScooby-site/assets/CAH_DROPS_ANIMATION.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </a>
+            </div>
+
             <div class="mt-12 text-center">
                 <a href="https://t.me/ThrillXScooby" target="_blank" rel="noopener noreferrer" class="homepage-card inline-flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg border-0">
                     <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
@@ -176,7 +188,7 @@
                     </div>
                     <div id="qualification-ended-message" class="hidden text-center bg-[#0d1117] p-4 rounded-lg border border-cyan-700 mb-6">
                         <p class="text-lg font-semibold text-cyan-400">The qualification period has ended.</p>
-                        <p class="text-gray-300">Below are the qualified players. Good luck!</p>
+                        <p class="text-gray-300">Good luck to all qualified players!</p>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="leaderboard-table poker-lb w-full text-sm sm:text-base">
@@ -192,7 +204,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // --- Global State ---
             let allPlayersData = [];
-            let gracePeriodViewApplied = false;
 
             // --- Page Elements ---
             const homepage = document.getElementById('homepage');
@@ -204,6 +215,7 @@
             const pokerBtn = document.getElementById('poker-btn');
             const biweeklyBody = document.getElementById('biweekly-body');
             const pokerBody = document.getElementById('poker-body');
+            const pokerTable = document.querySelector('#poker-leaderboard .leaderboard-table').parentNode;
             const qualificationEndedMessage = document.getElementById('qualification-ended-message');
 
             // --- Navigation Logic ---
@@ -248,7 +260,7 @@
                 }
             };
             
-            function populateTables(players) {
+            function populateTables(players, isGracePeriod = false) {
                 if (!Array.isArray(players)) {
                     players = [];
                 }
@@ -279,11 +291,18 @@
                 }
 
                 // Populate Poker Table
-                if (sortedPlayers.length === 0) {
-                     pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">No data available for the poker tournament.</td></tr>';
+                const qualificationAmount = BigInt("25000" + "0".repeat(18));
+                let pokerPlayers = sortedPlayers;
+
+                if (isGracePeriod) {
+                    pokerPlayers = sortedPlayers.filter(p => p.wagerValue >= qualificationAmount);
+                }
+
+                if (pokerPlayers.length === 0) {
+                    const message = isGracePeriod ? 'No players qualified for the tournament.' : 'No data available for the poker tournament.';
+                    pokerBody.innerHTML = `<tr><td colspan="2" class="w-full text-center py-4">${message}</td></tr>`;
                 } else {
-                    const top30Poker = sortedPlayers.slice(0, 30);
-                    const qualificationAmount = BigInt("25000" + "0".repeat(18));
+                    const top30Poker = pokerPlayers.slice(0, 30);
                     pokerBody.innerHTML = top30Poker.map((p, index) => {
                         const qualified = p.wagerValue >= qualificationAmount;
                         let displayWager = p.wagerFormatted;
@@ -326,8 +345,10 @@
 
                     const combinedPlayers = [...data.items, staticPlayer];
                     allPlayersData = combinedPlayers;
-
+                    
+                    // Initial population of the tables
                     populateTables(allPlayersData);
+
                 } catch (error) {
                     console.error('Error in fetchAllData:', error);
                     const errorMessage = `<tr><td colspan="3" class="w-full text-center py-4 text-red-500">Error: Could not load data. Please try again later.</td></tr>`;
@@ -378,34 +399,24 @@
 
             function setAndRunPokerCountdown() {
                 let pokerIntervalId;
+                let gracePeriodHandled = false;
+
                 const updatePokerCountdown = () => {
                     const baseTargetDate = getTargetDate();
                     const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
                     const now = new Date();
                     const pokerDistance = pokerTargetDate.getTime() - now.getTime();
                     const baseDistance = baseTargetDate.getTime() - now.getTime();
-                    
-                    const isInGracePeriod = baseDistance < 0 && pokerDistance > 0;
 
-                    if (isInGracePeriod && !gracePeriodViewApplied) {
-                        gracePeriodViewApplied = true;
-                        
-                        qualificationEndedMessage.classList.remove('hidden');
-
-                        const pokerRows = pokerBody.querySelectorAll('tr');
-                        let qualifiedCount = 0;
-                        pokerRows.forEach(row => {
-                            const isQualified = row.querySelector('svg');
-                            if (!isQualified) {
-                                row.classList.add('hidden');
-                            } else {
-                                qualifiedCount++;
-                            }
-                        });
-
-                        if (qualifiedCount === 0 && pokerRows.length > 0) {
-                             pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">No players qualified for this tournament.</td></tr>';
+                    // Logic for the 10-hour grace period
+                    if (baseDistance < 0 && pokerDistance > 0) {
+                        if (!gracePeriodHandled) {
+                            populateTables(allPlayersData, true); // Repopulate poker table with only qualified players
+                            gracePeriodHandled = true;
                         }
+                        qualificationEndedMessage.classList.remove('hidden');
+                    } else {
+                        qualificationEndedMessage.classList.add('hidden');
                     }
                     
                     if (pokerDistance < 0) {
