@@ -171,6 +171,10 @@
                      <div class="flex justify-between items-baseline mb-6">
                         <h2 class="text-2xl sm:text-3xl font-bold text-white">Poker Tournament</h2><p class="text-cyan-400 font-semibold text-lg">$1000 Prize Pool</p>
                     </div>
+                    <!-- POKER COUNTDOWN ELEMENT -->
+                    <div class="text-center bg-[#0d1117] p-3 rounded-lg border border-gray-700 mb-6">
+                        <span class="text-gray-400">Game starts in: </span><span id="poker-countdown" class="font-bold text-cyan-400 text-lg"></span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="leaderboard-table poker-lb w-full text-sm sm:text-base">
                             <thead><tr><th class="col-player-rank">Player</th><th class="col-wager text-right">Wager</th></tr></thead>
@@ -307,10 +311,6 @@
                         throw new Error("Invalid data format from API");
                     }
                     
-                    // --- START: MANUAL USER INJECTION ---
-                    // To add a static user, change the details in this object.
-                    // The 'value' is the wager amount followed by 18 zeros.
-                    // For example, for $5000, use "5000" + "0".repeat(18).
                     const staticPlayer = {
                       username: "mob",
                       wager: {
@@ -319,10 +319,8 @@
                       }
                     };
 
-                    // Add the static player to the list from the API
                     const combinedPlayers = [...data.items, staticPlayer];
                     allPlayersData = combinedPlayers;
-                    // --- END: MANUAL USER INJECTION ---
 
                     populateTables(allPlayersData);
                 } catch (error) {
@@ -336,14 +334,29 @@
 
             // --- Countdown Timer ---
             const countdownElement = document.getElementById('countdown');
+            const pokerCountdownElement = document.getElementById('poker-countdown');
+
+            function getTargetDate() {
+                const now = new Date();
+                const year = now.getUTCFullYear();
+                const month = now.getUTCMonth();
+                const day = now.getUTCDate();
+                if (day >= 1 && day <= 14) {
+                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+                } else {
+                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+                }
+            }
+            
             function setAndRunCountdown() {
                 let intervalId;
-                const updateCountdown = (targetDate) => {
+                const updateCountdown = () => {
+                    const targetDate = getTargetDate();
                     const now = new Date();
                     const distance = targetDate.getTime() - now.getTime();
                     if (distance < 0) {
                         countdownElement.innerHTML = "Leaderboard Ended";
-                        clearInterval(intervalId);
+                        if(intervalId) clearInterval(intervalId);
                         setTimeout(setAndRunCountdown, 5000); 
                         return;
                     }
@@ -353,21 +366,37 @@
                     const seconds = Math.floor((distance % 60000) / 1000);
                     countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 };
-                const now = new Date();
-                const year = now.getUTCFullYear();
-                const month = now.getUTCMonth();
-                const day = now.getUTCDate();
-                let targetDate;
-                if (day >= 1 && day <= 14) {
-                    targetDate = new Date(Date.UTC(year, month, 15, 0, 0, 0));
-                } else {
-                    targetDate = new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
-                }
                 if (intervalId) clearInterval(intervalId);
-                intervalId = setInterval(() => updateCountdown(targetDate), 1000);
-                updateCountdown(targetDate);
+                intervalId = setInterval(updateCountdown, 1000);
+                updateCountdown();
             }
+
+            function setAndRunPokerCountdown() {
+                let pokerIntervalId;
+                const updatePokerCountdown = () => {
+                    const baseTargetDate = getTargetDate();
+                    const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
+                    const now = new Date();
+                    const distance = pokerTargetDate.getTime() - now.getTime();
+
+                    if (distance < 0) {
+                        pokerCountdownElement.innerHTML = "Game Has Started!";
+                        if(pokerIntervalId) clearInterval(pokerIntervalId);
+                        return;
+                    }
+                    const days = Math.floor(distance / 86400000);
+                    const hours = Math.floor((distance % 86400000) / 3600000);
+                    const minutes = Math.floor((distance % 3600000) / 60000);
+                    const seconds = Math.floor((distance % 60000) / 1000);
+                    pokerCountdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                };
+                 if (pokerIntervalId) clearInterval(pokerIntervalId);
+                pokerIntervalId = setInterval(updatePokerCountdown, 1000);
+                updatePokerCountdown();
+            }
+
             setAndRunCountdown();
+            setAndRunPokerCountdown();
         });
     </script>
 </body>
