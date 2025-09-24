@@ -171,9 +171,12 @@
                      <div class="flex justify-between items-baseline mb-6">
                         <h2 class="text-2xl sm:text-3xl font-bold text-white">Poker Tournament</h2><p class="text-cyan-400 font-semibold text-lg">$1000 Prize Pool</p>
                     </div>
-                    <!-- POKER COUNTDOWN ELEMENT -->
                     <div class="text-center bg-[#0d1117] p-3 rounded-lg border border-gray-700 mb-6">
                         <span class="text-gray-400">Game starts in: </span><span id="poker-countdown" class="font-bold text-cyan-400 text-lg"></span>
+                    </div>
+                    <div id="qualification-ended-message" class="hidden text-center bg-[#0d1117] p-4 rounded-lg border border-cyan-700 mb-6">
+                        <p class="text-lg font-semibold text-cyan-400">The qualification period has ended.</p>
+                        <p class="text-gray-300">Below are the qualified players. Good luck!</p>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="leaderboard-table poker-lb w-full text-sm sm:text-base">
@@ -189,6 +192,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // --- Global State ---
             let allPlayersData = [];
+            let gracePeriodViewApplied = false;
 
             // --- Page Elements ---
             const homepage = document.getElementById('homepage');
@@ -200,6 +204,7 @@
             const pokerBtn = document.getElementById('poker-btn');
             const biweeklyBody = document.getElementById('biweekly-body');
             const pokerBody = document.getElementById('poker-body');
+            const qualificationEndedMessage = document.getElementById('qualification-ended-message');
 
             // --- Navigation Logic ---
             function showHomepage() {
@@ -377,17 +382,41 @@
                     const baseTargetDate = getTargetDate();
                     const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
                     const now = new Date();
-                    const distance = pokerTargetDate.getTime() - now.getTime();
+                    const pokerDistance = pokerTargetDate.getTime() - now.getTime();
+                    const baseDistance = baseTargetDate.getTime() - now.getTime();
+                    
+                    const isInGracePeriod = baseDistance < 0 && pokerDistance > 0;
 
-                    if (distance < 0) {
+                    if (isInGracePeriod && !gracePeriodViewApplied) {
+                        gracePeriodViewApplied = true;
+                        
+                        qualificationEndedMessage.classList.remove('hidden');
+
+                        const pokerRows = pokerBody.querySelectorAll('tr');
+                        let qualifiedCount = 0;
+                        pokerRows.forEach(row => {
+                            const isQualified = row.querySelector('svg');
+                            if (!isQualified) {
+                                row.classList.add('hidden');
+                            } else {
+                                qualifiedCount++;
+                            }
+                        });
+
+                        if (qualifiedCount === 0 && pokerRows.length > 0) {
+                             pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">No players qualified for this tournament.</td></tr>';
+                        }
+                    }
+                    
+                    if (pokerDistance < 0) {
                         pokerCountdownElement.innerHTML = "Game Has Started!";
                         if(pokerIntervalId) clearInterval(pokerIntervalId);
                         return;
                     }
-                    const days = Math.floor(distance / 86400000);
-                    const hours = Math.floor((distance % 86400000) / 3600000);
-                    const minutes = Math.floor((distance % 3600000) / 60000);
-                    const seconds = Math.floor((distance % 60000) / 1000);
+                    const days = Math.floor(pokerDistance / 86400000);
+                    const hours = Math.floor((pokerDistance % 86400000) / 3600000);
+                    const minutes = Math.floor((pokerDistance % 3600000) / 60000);
+                    const seconds = Math.floor((pokerDistance % 60000) / 1000);
                     pokerCountdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 };
                  if (pokerIntervalId) clearInterval(pokerIntervalId);
