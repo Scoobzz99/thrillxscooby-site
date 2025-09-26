@@ -12,9 +12,12 @@
         body { font-family: 'Inter', sans-serif; background-color: #0d1117; overflow-x: hidden; }
         .logo-font { font-family: 'Poppins', sans-serif; font-weight: 800; font-style: italic; letter-spacing: -0.05em; text-shadow: 0 0 8px rgba(34, 211, 238, 0.5), 0 0 20px rgba(34, 211, 238, 0.3); }
         .logo-x { font-size: 1.7em; line-height: 1; margin: 0 -0.1em; }
+        
+        /* UPDATED HOME BUTTON STYLES */
         #home-btn { cursor: pointer; transition: transform 0.3s ease; }
-        #home-btn:hover { transform: scale(1.03); }
+        body.leaderboard-active #home-btn:hover { transform: scale(1.03); } /* Hover effect only active on leaderboard page */
         #home-btn:active { transform: scale(0.98); transition-duration: 0.1s; }
+
         .nav-button.active { background-color: #22d3ee; color: #0d1117; }
         .nav-button { transition: background-color 0.3s ease, color 0.3s ease; }
         .banner-container { width: 100%; background: radial-gradient(ellipse at center, rgba(14, 52, 68, 0.7) 0%, #0d1117 70%); padding: 2rem 0; position: relative; overflow: hidden; }
@@ -117,25 +120,25 @@
             text-shadow: 0 0 5px rgba(34, 211, 238, 0.7), 0 0 10px rgba(168, 85, 247, 0.5);
         }
 
-        /* ANIMATION FOR DEGEN NOW BUTTON */
+        /* UPDATED ANIMATION FOR DEGEN BUTTON */
         #degen-now-btn {
             animation: pulse-glow 2.5s ease-in-out infinite;
-            border: 2px solid rgba(74, 222, 128, 0.5);
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Added for smooth hover */
+            border: 2px solid rgba(34, 211, 238, 0.5); /* Changed to blue */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
         }
         #degen-now-btn:hover {
-            animation-play-state: paused; /* Pause animation on hover */
-            transform: scale(1.1); /* Make it slightly bigger on hover */
-            box-shadow: 0 0 30px rgba(74, 222, 128, 1), 0 0 45px rgba(74, 222, 128, 0.8); /* Intensify glow */
+            animation-play-state: paused;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(34, 211, 238, 1), 0 0 45px rgba(34, 211, 238, 0.8); /* Changed to blue */
         }
         @keyframes pulse-glow {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 15px rgba(74, 222, 128, 0.6);
+                box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); /* Changed to blue */
             }
             50% {
                 transform: scale(1.05);
-                box-shadow: 0 0 25px rgba(74, 222, 128, 1), 0 0 40px rgba(74, 222, 128, 0.7);
+                box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 40px rgba(34, 211, 238, 0.7); /* Changed to blue */
             }
         }
 
@@ -159,7 +162,7 @@
              <div class="text-center mb-8">
                 <!-- MODIFIED DEGEN NOW BUTTON -->
                 <a id="degen-now-btn" href="https://thrill.com/?r=Scooby" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300">
-                    Degen Now
+                    Degen Time
                 </a>
             </div>
             
@@ -264,6 +267,12 @@
             </main>
         </div>
     </div>
+
+    <!-- NEW FOOTER SECTION -->
+    <footer class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 text-center text-gray-500 text-sm mt-auto">
+        <p>This website and its contents are intended for individuals 18 years of age and older. Please participate responsibly.</p>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- Global State ---
@@ -286,10 +295,12 @@
             function showHomepage() {
                 homepage.classList.remove('hidden');
                 leaderboardPage.classList.add('hidden');
+                document.body.classList.remove('leaderboard-active'); // For logo hover
             }
             function showLeaderboardPage(tabIndex) {
                 homepage.classList.add('hidden');
                 leaderboardPage.classList.remove('hidden');
+                document.body.classList.add('leaderboard-active'); // For logo hover
                 switchTab(tabIndex);
             }
             function switchTab(activeIndex) {
