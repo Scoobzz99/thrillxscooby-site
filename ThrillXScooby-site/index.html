@@ -117,10 +117,16 @@
             text-shadow: 0 0 5px rgba(34, 211, 238, 0.7), 0 0 10px rgba(168, 85, 247, 0.5);
         }
 
-        /* NEW ANIMATION FOR DEGEN NOW BUTTON */
+        /* ANIMATION FOR DEGEN NOW BUTTON */
         #degen-now-btn {
             animation: pulse-glow 2.5s ease-in-out infinite;
             border: 2px solid rgba(74, 222, 128, 0.5);
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Added for smooth hover */
+        }
+        #degen-now-btn:hover {
+            animation-play-state: paused; /* Pause animation on hover */
+            transform: scale(1.1); /* Make it slightly bigger on hover */
+            box-shadow: 0 0 30px rgba(74, 222, 128, 1), 0 0 45px rgba(74, 222, 128, 0.8); /* Intensify glow */
         }
         @keyframes pulse-glow {
             0%, 100% {
@@ -192,7 +198,7 @@
             <!-- NEW LAYOUT FOR CARDS -->
             <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                 <!-- Cash Drops Card -->
-                <a href="https://t.me/ThrillXScooby" target="_blank" rel="noopener noreferrer" class="block animated-gradient-card rounded-xl p-6 text-center w-full h-full homepage-card">
+                <a href="https://t.me/ScoobzCartel" target="_blank" rel="noopener noreferrer" class="block animated-gradient-card rounded-xl p-6 text-center w-full h-full homepage-card">
                     <div class="flex items-center justify-center h-full">
                         <svg class="w-8 h-8 mr-4 text-cyan-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
                         <h3 class="text-xl font-bold neon-text">Cash drops on telegram</h3>
