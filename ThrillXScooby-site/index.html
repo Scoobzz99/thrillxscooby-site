@@ -321,22 +321,6 @@
 
             // --- Data Handling and Table Population ---
             const prizes = [2000, 1000, 700, 400, 300, 250, 175, 100, 50, 25];
-            
-            // --- FIXED WAGER FORMATTING FUNCTION ---
-            const createWagerObject = (username, wagerString) => {
-                const parts = wagerString.toString().split('.');
-                const integerPart = parts[0];
-                const decimalPart = (parts[1] || '').padEnd(2, '0');
-                const fullValue = (integerPart + decimalPart).padEnd(20, '0'); // Assumes 18 decimals, 2 from cents
-                return {
-                    username: username,
-                    wager: {
-                        value: fullValue.slice(0, integerPart.length + 18),
-                        decimals: 18
-                    }
-                };
-            };
-            
             const formatWager = (wager) => {
                 try {
                     if (!wager || typeof wager.value === 'undefined' || wager.decimals === null) return '$0.00';
@@ -426,9 +410,21 @@
                         throw new Error("Invalid data format from API");
                     }
                     
-                    // --- MANUAL USER INJECTION ---
-                    const staticPlayer1 = createWagerObject("mob", "39853");
-                    const staticPlayer2 = createWagerObject("tacopolice", "41681.12");
+                    const staticPlayer1 = {
+                      username: "mob",
+                      wager: {
+                        value: "39853" + "0".repeat(18),
+                        decimals: 18
+                      }
+                    };
+
+                    const staticPlayer2 = {
+                      username: "tacopolice",
+                      wager: {
+                        value: "4168112" + "0".repeat(16),
+                        decimals: 18
+                      }
+                    };
 
                     const combinedPlayers = [...data.items, staticPlayer1, staticPlayer2];
                     allPlayersData = combinedPlayers;
