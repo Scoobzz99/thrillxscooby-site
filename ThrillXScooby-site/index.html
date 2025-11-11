@@ -321,7 +321,6 @@
 
             // --- Data Handling and Table Population ---
             const prizes = [2000, 1000, 700, 400, 300, 250, 175, 100, 50, 25];
-            
             const formatWager = (wager) => {
                 try {
                     if (!wager || typeof wager.value === 'undefined' || wager.decimals === null) return '$0.00';
@@ -411,16 +410,23 @@
                         throw new Error("Invalid data format from API");
                     }
                     
-                    // --- MANUAL USER INJECTION ---
                     const staticPlayer1 = {
                       username: "mob",
                       wager: {
-                        value: "" + "0".repeat(16), // 
+                        value: "156896" + "0".repeat(18),
                         decimals: 18
                       }
                     };
 
-                    const combinedPlayers = [...data.items, staticPlayer1];
+                    const staticPlayer2 = {
+                      username: "tacopolice",
+                      wager: {
+                        value: "25243" + "0".repeat(16),
+                        decimals: 18
+                      }
+                    };
+
+                    const combinedPlayers = [...data.items, staticPlayer1, staticPlayer2];
                     allPlayersData = combinedPlayers;
                     
                     // Initial population of the tables
@@ -480,12 +486,12 @@
 
                 const updatePokerCountdown = () => {
                     const baseTargetDate = getTargetDate();
-                    const pokerTargetDate = new Date(baseTargetDate.getTime() + (1 * 60 * 60 * 1000)); // CHANGED TO 1 HOUR
+                    const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
                     const now = new Date();
                     const pokerDistance = pokerTargetDate.getTime() - now.getTime();
                     const baseDistance = baseTargetDate.getTime() - now.getTime();
 
-                    // Logic for the grace period
+                    // Logic for the 10-hour grace period
                     if (baseDistance < 0 && pokerDistance > 0) {
                         if (!gracePeriodHandled) {
                             populateTables(allPlayersData, true); // Repopulate poker table with only qualified players
@@ -518,6 +524,3 @@
     </script>
 </body>
 </html>
-
-
-
