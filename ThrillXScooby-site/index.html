@@ -268,13 +268,17 @@
         </div>
     </div>
 
+    <!-- NEW FOOTER SECTION -->
     <footer class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 text-center text-gray-500 text-sm mt-auto">
         <p>This website and its contents are intended for individuals 18 years of age and older. Please participate responsibly.</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Global State ---
             let allPlayersData = [];
+
+            // --- Page Elements ---
             const homepage = document.getElementById('homepage');
             const leaderboardPage = document.getElementById('leaderboard-page');
             const homeBtn = document.getElementById('home-btn');
@@ -284,34 +288,38 @@
             const pokerBtn = document.getElementById('poker-btn');
             const biweeklyBody = document.getElementById('biweekly-body');
             const pokerBody = document.getElementById('poker-body');
+            const pokerTable = document.querySelector('#poker-leaderboard .leaderboard-table').parentNode;
             const qualificationEndedMessage = document.getElementById('qualification-ended-message');
 
-            function showHomepage() { homepage.classList.remove('hidden'); leaderboardPage.classList.add('hidden'); document.body.classList.remove('leaderboard-active'); }
-            function showLeaderboardPage(tabIndex) { homepage.classList.add('hidden'); leaderboardPage.classList.remove('hidden'); document.body.classList.add('leaderboard-active'); switchTab(tabIndex); }
-            function switchTab(activeIndex) { [biweeklyBtn, pokerBtn].forEach((b, i) => { b.classList.toggle('active', i === activeIndex); b.classList.toggle('text-gray-300', i !== activeIndex); b.classList.toggle('hover:bg-gray-700', i !== activeIndex); }); [document.getElementById('biweekly-leaderboard'), document.getElementById('poker-leaderboard')].forEach((l, i) => l.classList.toggle('hidden', i !== activeIndex)); }
-            homeBtn.addEventListener('click', showHomepage); wagerCard.addEventListener('click', () => showLeaderboardPage(0)); pokerCard.addEventListener('click', () => showLeaderboardPage(1)); biweeklyBtn.addEventListener('click', () => switchTab(0)); pokerBtn.addEventListener('click', () => switchTab(1));
-
-            // --- DATE LOGIC ---
-            // The Target for the CURRENT period is Jan 15, 2026.
-            const TARGET_JAN_15 = new Date(Date.UTC(2026, 0, 15, 0, 0, 0));
-
-            function getTargetDate() {
-                const now = new Date();
-                // Override for the current skip: target the 15th of next month
-                if (now < TARGET_JAN_15) {
-                    return TARGET_JAN_15;
-                }
-                // Standard logic for after Jan 15th
-                const year = now.getUTCFullYear();
-                const month = now.getUTCMonth();
-                const day = now.getUTCDate();
-                if (day >= 1 && day <= 14) {
-                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
-                } else {
-                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
-                }
+            // --- Navigation Logic ---
+            function showHomepage() {
+                homepage.classList.remove('hidden');
+                leaderboardPage.classList.add('hidden');
+                document.body.classList.remove('leaderboard-active'); // For logo hover
             }
+            function showLeaderboardPage(tabIndex) {
+                homepage.classList.add('hidden');
+                leaderboardPage.classList.remove('hidden');
+                document.body.classList.add('leaderboard-active'); // For logo hover
+                switchTab(tabIndex);
+            }
+            function switchTab(activeIndex) {
+                const navButtons = [biweeklyBtn, pokerBtn];
+                const leaderboards = [document.getElementById('biweekly-leaderboard'), document.getElementById('poker-leaderboard')];
+                navButtons.forEach((button, index) => {
+                    button.classList.toggle('active', index === activeIndex);
+                    button.classList.toggle('text-gray-300', index !== activeIndex);
+                    button.classList.toggle('hover:bg-gray-700', index !== activeIndex);
+                });
+                leaderboards.forEach((leaderboard, index) => leaderboard.classList.toggle('hidden', index !== activeIndex));
+            }
+            homeBtn.addEventListener('click', showHomepage);
+            wagerCard.addEventListener('click', () => showLeaderboardPage(0));
+            pokerCard.addEventListener('click', () => showLeaderboardPage(1));
+            biweeklyBtn.addEventListener('click', () => switchTab(0));
+            pokerBtn.addEventListener('click', () => switchTab(1));
 
+            // --- Data Handling and Table Population ---
             const prizes = [2000, 1000, 700, 400, 300, 250, 175, 100, 50, 25];
             const formatWager = (wager) => {
                 try {
@@ -328,19 +336,9 @@
             };
             
             function populateTables(players, isGracePeriod = false) {
-                const now = new Date();
-                
-                // --- ALWAYS RESET LOGIC ---
-                // If a new leaderboard contest has started but the server data hasn't refreshed yet,
-                // we clear the table on the frontend so it "starts from 0" visually.
-                // We define "Fresh Period" as the first 10 minutes after a reset threshold.
-                const target = getTargetDate();
-                const cycleStart = new Date(target.getTime() - (14 * 24 * 60 * 60 * 1000)); // Approx 14 days ago
-                const isVeryFresh = (now.getTime() - cycleStart.getTime()) < (5 * 60 * 1000); // 5 minute window
-
-                // If it's a new period and server might have old data, or players is empty, clear it.
-                if (!Array.isArray(players)) { players = []; }
-
+                if (!Array.isArray(players)) {
+                    players = [];
+                }
                 const processedPlayers = players.map(p => {
                     return {
                         name: p.username || 'Unknown',
@@ -355,8 +353,9 @@
                     return 0;
                 });
                 
+                // Populate Bi-Weekly Table
                 if (sortedPlayers.length === 0) {
-                    biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">Waiting for new wager data...</td></tr>';
+                    biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">No wager data for the current period.</td></tr>';
                 } else {
                     const top15 = sortedPlayers.slice(0, 15);
                     biweeklyBody.innerHTML = top15.map((p, index) => `
@@ -366,9 +365,13 @@
                     `).join('');
                 }
 
+                // Populate Poker Table
                 const qualificationAmount = BigInt("25000" + "0".repeat(18));
                 let pokerPlayers = sortedPlayers;
-                if (isGracePeriod) { pokerPlayers = sortedPlayers.filter(p => p.wagerValue >= qualificationAmount); }
+
+                if (isGracePeriod) {
+                    pokerPlayers = sortedPlayers.filter(p => p.wagerValue >= qualificationAmount);
+                }
 
                 if (pokerPlayers.length === 0) {
                     const message = isGracePeriod ? 'No players qualified for the tournament.' : 'No data available for the poker tournament.';
@@ -380,9 +383,15 @@
                         let displayWager = p.wagerFormatted;
                         let colorClass = 'text-red-500';
                         const icon = qualified ? `<svg class="w-6 h-6 ml-2 inline-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#38BDF8;stop-opacity:1" /><stop offset="100%" style="stop-color:#0E7490;stop-opacity:1" /></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="1"/><feOffset dx="1" dy="1" result="offsetblur"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/> </feMerge></filter></defs><g transform="rotate(15 12 12)" filter="url(#shadow)"><circle cx="12" cy="12" r="10" fill="#111827"/><path d="M12,2 A10,10 0 0,1 12,22 A10,10 0 0,1 12,2 Z M12,4 A8,8 0 0,0 12,20 A8,8 0 0,0 12,4 Z" fill="url(#blueGradient)"/><path fill="#0d1117" d="M12 5.5 C16 5.5, 18 9, 12 15 C6,9, 8,5.5, 12 5.5 M10.5 14.5 L13.5 14.5 L12 17 Z" /><circle cx="12" cy="12" r="5.5" stroke="url(#blueGradient)" stroke-width="1" fill="none"/>${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<rect x="11.25" y="2.5" width="1.5" height="2" fill="url(#blueGradient)" transform="rotate(${a} 12 12)"/>`).join('')}</g></svg>` : '';
-                        if(qualified) { displayWager = '$25,000.00'; colorClass = 'text-green-400'; }
-                        else if (p.wagerValue >= BigInt("20000" + "0".repeat(18))) { colorClass = 'text-yellow-400'; }
-                        else if (p.wagerValue >= BigInt("10000" + "0".repeat(18))) { colorClass = 'text-orange-400'; }
+                        
+                        if(qualified) {
+                            displayWager = '$25,000.00';
+                            colorClass = 'text-green-400';
+                        } else if (p.wagerValue >= BigInt("20000" + "0".repeat(18))) {
+                            colorClass = 'text-yellow-400';
+                        } else if (p.wagerValue >= BigInt("10000" + "0".repeat(18))) {
+                            colorClass = 'text-orange-400';
+                        }
                         return `<tr><td class="col-player-rank"><span class="rank-badge">${index + 1}</span><span>${p.name}</span></td><td class="col-wager font-semibold ${colorClass}"><span>${displayWager}</span>${icon}</td></tr>`;
                     }).join('');
                 }
@@ -393,16 +402,36 @@
                 pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">Loading...</td></tr>';
                 try {
                     const response = await fetch('/getLeaderboardData');
-                    if (!response.ok) { throw new Error(`API call failed: ${response.status}`); }
+                    if (!response.ok) {
+                        throw new Error(`API call failed: ${response.status}`);
+                    }
                     const data = await response.json();
-                    if (!data || !Array.isArray(data.items)) { throw new Error("Invalid data format from API"); }
+                    if (!data || !Array.isArray(data.items)) {
+                        throw new Error("Invalid data format from API");
+                    }
                     
-                    const combinedPlayers = [...data.items, 
-                        { username: "mob", wager: { value: "0", decimals: 18 } },
-                        { username: "tacopolice", wager: { value: "0", decimals: 18 } }
-                    ];
+                    const staticPlayer1 = {
+                      username: "mob",
+                      wager: {
+                        value: "0" + "0".repeat(18),
+                        decimals: 18
+                      }
+                    };
+
+                    const staticPlayer2 = {
+                      username: "tacopolice",
+                      wager: {
+                        value: "0" + "0".repeat(16),
+                        decimals: 18
+                      }
+                    };
+
+                    const combinedPlayers = [...data.items, staticPlayer1, staticPlayer2];
                     allPlayersData = combinedPlayers;
+                    
+                    // Initial population of the tables
                     populateTables(allPlayersData);
+
                 } catch (error) {
                     console.error('Error in fetchAllData:', error);
                     const errorMessage = `<tr><td colspan="3" class="w-full text-center py-4 text-red-500">Error: Could not load data. Please try again later.</td></tr>`;
@@ -412,9 +441,22 @@
             }
             fetchAllData();
 
+            // --- Countdown Timer ---
             const countdownElement = document.getElementById('countdown');
             const pokerCountdownElement = document.getElementById('poker-countdown');
 
+            function getTargetDate() {
+                const now = new Date();
+                const year = now.getUTCFullYear();
+                const month = now.getUTCMonth();
+                const day = now.getUTCDate();
+                if (day >= 1 && day <= 14) {
+                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+                } else {
+                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+                }
+            }
+            
             function setAndRunCountdown() {
                 let intervalId;
                 const updateCountdown = () => {
@@ -424,9 +466,7 @@
                     if (distance < 0) {
                         countdownElement.innerHTML = "Leaderboard Ended";
                         if(intervalId) clearInterval(intervalId);
-                        // Re-initialize to pickup next period
-                        setTimeout(setAndRunCountdown, 2000); 
-                        fetchAllData(); // Refresh data as well
+                        setTimeout(setAndRunCountdown, 5000); 
                         return;
                     }
                     const days = Math.floor(distance / 86400000);
@@ -443,6 +483,7 @@
             function setAndRunPokerCountdown() {
                 let pokerIntervalId;
                 let gracePeriodHandled = false;
+
                 const updatePokerCountdown = () => {
                     const baseTargetDate = getTargetDate();
                     const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
@@ -450,9 +491,10 @@
                     const pokerDistance = pokerTargetDate.getTime() - now.getTime();
                     const baseDistance = baseTargetDate.getTime() - now.getTime();
 
+                    // Logic for the 10-hour grace period
                     if (baseDistance < 0 && pokerDistance > 0) {
                         if (!gracePeriodHandled) {
-                            populateTables(allPlayersData, true);
+                            populateTables(allPlayersData, true); // Repopulate poker table with only qualified players
                             gracePeriodHandled = true;
                         }
                         qualificationEndedMessage.classList.remove('hidden');
@@ -482,3 +524,8 @@
     </script>
 </body>
 </html>
+
+
+
+
+
