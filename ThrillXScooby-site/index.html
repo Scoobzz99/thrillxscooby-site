@@ -447,14 +447,7 @@
             function getTargetDate() {
                 const now = new Date();
                 
-                // STEP 1: ONE-TIME SKIP (Ends 20 minutes from Now: 01:06 UTC Dec 28)
-                const skipEndTime = new Date(Date.UTC(2025, 11, 28, 1, 6, 0)); 
-
-                if (now < skipEndTime) {
-                    return skipEndTime;
-                }
-
-                // STEP 2: NEXT TARGET (Goes to Jan 15th 2026)
+                // TARGET: January 15th 2026 (Skip period complete)
                 const nextNormalTarget = new Date(Date.UTC(2026, 0, 15, 0, 0, 0));
                 
                 if (now < nextNormalTarget) {
