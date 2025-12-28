@@ -288,19 +288,18 @@
             const pokerBtn = document.getElementById('poker-btn');
             const biweeklyBody = document.getElementById('biweekly-body');
             const pokerBody = document.getElementById('poker-body');
-            const pokerTable = document.querySelector('#poker-leaderboard .leaderboard-table').parentNode;
             const qualificationEndedMessage = document.getElementById('qualification-ended-message');
 
             // --- Navigation Logic ---
             function showHomepage() {
                 homepage.classList.remove('hidden');
                 leaderboardPage.classList.add('hidden');
-                document.body.classList.remove('leaderboard-active'); // For logo hover
+                document.body.classList.remove('leaderboard-active');
             }
             function showLeaderboardPage(tabIndex) {
                 homepage.classList.add('hidden');
                 leaderboardPage.classList.remove('hidden');
-                document.body.classList.add('leaderboard-active'); // For logo hover
+                document.body.classList.add('leaderboard-active');
                 switchTab(tabIndex);
             }
             function switchTab(activeIndex) {
@@ -447,6 +446,22 @@
 
             function getTargetDate() {
                 const now = new Date();
+                
+                // STEP 1: ONE-TIME SKIP (Ends 20 minutes from Now: 01:06 UTC Dec 28)
+                const skipEndTime = new Date(Date.UTC(2025, 11, 28, 1, 6, 0)); 
+
+                if (now < skipEndTime) {
+                    return skipEndTime;
+                }
+
+                // STEP 2: NEXT TARGET (Goes to Jan 15th 2026)
+                const nextNormalTarget = new Date(Date.UTC(2026, 0, 15, 0, 0, 0));
+                
+                if (now < nextNormalTarget) {
+                    return nextNormalTarget;
+                }
+
+                // FALLBACK: Back to Normal Schedule (1st and 15th)
                 const year = now.getUTCFullYear();
                 const month = now.getUTCMonth();
                 const day = now.getUTCDate();
@@ -524,10 +539,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
