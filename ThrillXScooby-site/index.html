@@ -445,18 +445,29 @@
             const countdownElement = document.getElementById('countdown');
             const pokerCountdownElement = document.getElementById('poker-countdown');
 
-            function getTargetDate() {
-                const now = new Date();
-                const year = now.getUTCFullYear();
-                const month = now.getUTCMonth();
-                const day = now.getUTCDate();
-                if (day >= 1 && day <= 14) {
-                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
-                } else {
-                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
-                }
-            }
-            
+function getTargetDate() {
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth(); // Jan is 0, Dec is 11
+    const day = now.getUTCDate();
+
+    // 1. THE HOLIDAY WINDOW (Dec 28 - Jan 15)
+    // Starts Dec 28
+    if (month === 11 && day >= 28) {
+        return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
+    } 
+    // Ends Jan 15
+    if (month === 0 && day <= 14) {
+        return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
+    }
+
+    // 2. NORMAL BI-MONTHLY LOGIC (Rest of the year)
+    if (day >= 1 && day <= 14) {
+        return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+    } else {
+        return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+    }
+}            
             function setAndRunCountdown() {
                 let intervalId;
                 const updateCountdown = () => {
@@ -524,6 +535,7 @@
     </script>
 </body>
 </html>
+
 
 
 
