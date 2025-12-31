@@ -160,7 +160,6 @@
         <main id="homepage">
              <div class="text-center mb-8"><p class="text-xl text-cyan-400 font-semibold tracking-wider">Code : SCOOBY</p></div>
              <div class="text-center mb-8">
-                <!-- MODIFIED DEGEN NOW BUTTON -->
                 <a id="degen-now-btn" href="https://thrill.com/?r=Scooby" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300">
                     Degen Time
                 </a>
@@ -198,16 +197,13 @@
                 </div>
             </div>
 
-            <!-- NEW LAYOUT FOR CARDS -->
             <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                <!-- Cash Drops Card -->
                 <a href="https://t.me/ScoobzCartel" target="_blank" rel="noopener noreferrer" class="block animated-gradient-card rounded-xl p-6 text-center w-full h-full homepage-card">
                     <div class="flex items-center justify-center h-full">
                         <svg class="w-8 h-8 mr-4 text-cyan-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
                         <h3 class="text-xl font-bold neon-text">Cash drops on telegram</h3>
                     </div>
                 </a>
-                <!-- Join our Chat Room Card -->
                 <a href="https://t.me/ThrillXScooby" target="_blank" rel="noopener noreferrer" class="block homepage-card rounded-xl p-6 text-center w-full h-full bg-cyan-600 hover:bg-cyan-700 border-0">
                      <div class="flex items-center justify-center h-full">
                         <svg class="w-8 h-8 mr-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
@@ -268,7 +264,6 @@
         </div>
     </div>
 
-    <!-- NEW FOOTER SECTION -->
     <footer class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 text-center text-gray-500 text-sm mt-auto">
         <p>This website and its contents are intended for individuals 18 years of age and older. Please participate responsibly.</p>
     </footer>
@@ -450,7 +445,18 @@
                 const year = now.getUTCFullYear();
                 const month = now.getUTCMonth();
                 const day = now.getUTCDate();
-                if (day >= 1 && day <= 14) {
+
+                // 1. HOLIDAY CYCLE (Dec 28 - Jan 15)
+                if (month === 11 && day >= 28) {
+                    return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
+                } 
+                if (month === 0 && day <= 14) {
+                    return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
+                }
+
+                // 2. NORMAL BI-WEEKLY LOGIC
+                // We add "month !== 11" to ensure early Dec points to Jan 1st instead of Dec 15th
+                if (day >= 1 && day <= 14 && month !== 11) {
                     return new Date(Date.UTC(year, month, 15, 0, 0, 0));
                 } else {
                     return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
@@ -524,7 +530,3 @@
     </script>
 </body>
 </html>
-
-
-
-
