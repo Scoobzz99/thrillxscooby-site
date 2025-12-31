@@ -12,514 +12,123 @@
         body { font-family: 'Inter', sans-serif; background-color: #0d1117; overflow-x: hidden; }
         .logo-font { font-family: 'Poppins', sans-serif; font-weight: 800; font-style: italic; letter-spacing: -0.05em; text-shadow: 0 0 8px rgba(34, 211, 238, 0.5), 0 0 20px rgba(34, 211, 238, 0.3); }
         .logo-x { font-size: 1.7em; line-height: 1; margin: 0 -0.1em; }
-        
-        /* UPDATED HOME BUTTON STYLES */
         #home-btn { cursor: pointer; transition: transform 0.3s ease; }
-        body.leaderboard-active #home-btn:hover { transform: scale(1.03); } /* Hover effect only active on leaderboard page */
+        body.leaderboard-active #home-btn:hover { transform: scale(1.03); }
         #home-btn:active { transform: scale(0.98); transition-duration: 0.1s; }
-
         .nav-button.active { background-color: #22d3ee; color: #0d1117; }
         .nav-button { transition: background-color 0.3s ease, color 0.3s ease; }
         .banner-container { width: 100%; background: radial-gradient(ellipse at center, rgba(14, 52, 68, 0.7) 0%, #0d1117 70%); padding: 2rem 0; position: relative; overflow: hidden; }
         .character { position: absolute; bottom: 0; width: 40%; max-width: 350px; opacity: 0.7; pointer-events: none; }
         .character.scooby { left: -5%; }
         .homepage-card { background-color: #161b22; border: 1px solid #30363d; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .homepage-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 0 35px rgba(34, 211, 238, 0.6);
-        }
-        .homepage-card:active { transform: translateY(-2px) scale(0.98); transition-duration: 0.1s; }
-        
-        @keyframes stream {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        #wager-card {
-             background: 
-                linear-gradient(90deg, transparent, rgba(255, 50, 50, 0.4), transparent),
-                linear-gradient(90deg, #161b22, #111827);
-            background-size: 200% 100%;
-            animation: stream 5s ease-in-out infinite;
-            border-color: #7f1d1d;
-        }
-        #poker-card {
-            background-image: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.15) 0%, transparent 70%),
-                              linear-gradient(to bottom, #0e2a33, #081419);
-            border-color: #164e63;
-        }
-        #biweekly-leaderboard {
-            background-image: radial-gradient(ellipse at center, rgba(255, 50, 50, 0.1) 0%, transparent 70%),
-                              linear-gradient(to bottom, #4a1c1c, #1a1125);
-            border-color: #7f1d1d;
-        }
-        #poker-leaderboard {
-            background-image: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.1) 0%, transparent 70%),
-                              linear-gradient(to bottom, #0e2a33, #081419);
-            border-color: #164e63;
-        }
-
-        .leaderboard-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        .leaderboard-table thead tr, .leaderboard-table tbody tr { display: flex; gap: 0.5rem; width: 100%; }
-        .leaderboard-table tbody tr { margin-bottom: 0.5rem; }
-        .leaderboard-table th, .leaderboard-table td { display: flex; align-items: center; padding: 0.75rem 1rem; flex-grow: 1; flex-shrink: 1; }
-        .leaderboard-table th { color: #a0aec0; font-weight: 600; padding-bottom: 0.5rem; }
-        
-        .leaderboard-table td { 
-            background-color: #0d1117;
-            border-radius: 0.5rem; 
-            border: 1px solid #30363d;
-        }
-        .rank-badge { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            width: 2.2em; 
-            height: 2.2em; 
-            border-radius: 9999px; 
-            background-color: transparent;
-            border: 2px solid #9ca3af;
-            font-weight: 700; 
-            color: #22d3ee; 
-            margin-right: 1rem; 
-            flex-shrink: 0; 
-        }
-
-        .wager-lb .col-player-rank { flex-basis: 55%; }
-        .wager-lb .col-wager { flex-basis: 25%; justify-content: flex-start; }
-        .wager-lb .col-winnings { flex-basis: 20%; justify-content: flex-start; }
-        .poker-lb .col-player-rank { flex-basis: 65%; }
-        .poker-lb .col-wager { flex-basis: 35%; justify-content: flex-end;}
-
-        /* STYLES FOR ANIMATED CARD */
-        .animated-gradient-card {
-            position: relative;
-            overflow: hidden;
-            background-color: #161b22;
-            border: 2px solid transparent;
-            z-index: 1;
-        }
-        .animated-gradient-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0; left: 0;
-            z-index: -1;
-            margin: -2px;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #22d3ee, #a855f7, #22d3ee);
-            background-size: 200% 200%;
-            animation: gradient-animation 4s ease infinite;
-            filter: blur(5px);
-        }
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .neon-text {
-            text-shadow: 0 0 5px rgba(34, 211, 238, 0.7), 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-
-        /* UPDATED ANIMATION FOR DEGEN BUTTON */
-        #degen-now-btn {
-            animation: pulse-glow 2.5s ease-in-out infinite;
-            border: 2px solid rgba(34, 211, 238, 0.5); 
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-        }
-        #degen-now-btn:hover {
-            animation-play-state: paused;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(34, 211, 238, 1), 0 0 45px rgba(34, 211, 238, 0.8); 
-        }
-        @keyframes pulse-glow {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); 
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 40px rgba(34, 211, 238, 0.7); 
-            }
-        }
-
-        @media (max-width: 768px) { .character { width: 35%; opacity: 0.5; } .character.scooby { left: -10%; } .logo-font { font-size: 3rem; } }
-        @media (max-width: 480px) { .character { width: 40%; opacity: 0.3; } .character.scooby { left: -15%; } .leaderboard-table th, .leaderboard-table td { padding: 0.75rem; font-size: 0.875rem; } }
+        .homepage-card:hover { transform: translateY(-5px); box-shadow: 0 0 35px rgba(34, 211, 238, 0.6); }
+        @keyframes stream { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        #wager-card { background: linear-gradient(90deg, transparent, rgba(255, 50, 50, 0.4), transparent), linear-gradient(90deg, #161b22, #111827); background-size: 200% 100%; animation: stream 5s ease-in-out infinite; border-color: #7f1d1d; }
+        .leaderboard-table td { background-color: #0d1117; border-radius: 0.5rem; border: 1px solid #30363d; }
+        .rank-badge { display: flex; align-items: center; justify-content: center; width: 2.2em; height: 2.2em; border-radius: 9999px; border: 2px solid #9ca3af; font-weight: 700; color: #22d3ee; margin-right: 1rem; flex-shrink: 0; }
+        #degen-now-btn { animation: pulse-glow 2.5s ease-in-out infinite; border: 2px solid rgba(34, 211, 238, 0.5); }
+        @keyframes pulse-glow { 0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); } 50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(34, 211, 238, 1); } }
     </style>
 </head>
 <body class="text-gray-200 min-h-screen flex flex-col items-center">
     <div class="banner-container">
-        <svg class="character scooby" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="#21262d" d="M55.5,183.4c-6-1.5-11.4-5.3-15.3-10.8c-4.9-6.9-6.6-15.3-5-23.7c3.4-17.7,18.4-31.4,36.2-34.8 c14.2-2.7,28.3,1.1,38.9,10.5c5.3,4.7,9.3,10.6,11.5,17.2c2.4,7.1,2.8,14.7,1.1,21.9c-3.1,13.2-12.8,24-25.2,27.8 C85,195.4,69.9,191.1,55.5,183.4z"/><path fill="#30363d" d="M110.1,98.6c-4.3-13.6-14.9-23.9-28.5-27.1c-13.6-3.2-27.8,0.4-38.1,9.7c-5.2,4.7-9.3,10.6-11.8,17.1 c-2.8,7.3-3.6,15.2-2.1,22.9c3.2,16.5,17.4,29.1,34.1,32c0.3,0.1,0.6,0.1,0.9,0.1c16.3,0,30.7-11.1,34.9-26.7 C113.1,118.3,115.3,107.9,110.1,98.6z"/><path fill="#161b22" d="M103.2,148.2c-1.3,0.3-2.6,0.4-3.9,0.4c-12.8,0-24.1-8.1-28.1-19.9c-3.1,9.1-1.5,19.1,4.1-26.9 c7.1-9.9,19.3-14,31.2-10.9c11.9,3.1,20.5,12.7,22.5,24.6c1.5,8.9-1.4,18-7.5,24.8C116.5,147.2,109.9,149,103.2,148.2z"/><path fill="#21262d" d="M57.6,90.2c-5.8-3.4-12.4-5.3-19.1-5.3c-1.9,0-3.8,0.2-5.6,0.5c-10.4,1.8-19.3,8.4-23.7,17.6 c-3.9,8.1-4.1,17.5-0.7,25.9c3.2,7.9,9.4,14.1,17.3,17.6c7.9,3.5,16.9,3.8,24.9,0.8c9.5-3.6,17.1-10.9,20.4-20.1 c2.2-6.2,2.3-12.8,0.2-19.1C70.1,100.9,64.2,93.9,57.6,90.2z"/><path fill="#0d1117" d="M96,73.1c-3.9-1.1-7.9-1.6-11.9-1.6c-7.9,0-15.6,2.2-22.3,6.3c-6.1,3.7-11.1,8.9-14.4,15.1 c-0.8,1.5-1.5,3.1-2.1,4.7c-0.1,0.4-0.2,0.7-0.3,1.1c-0.1,0.3-0.2,0.6-0.3,0.9c-0.6,1.9-1.1,3.8-1.5,5.7c-0.1,0.5-0.2,1-0.3,1.5 c-1,4.9-1,9.9,0.1,14.8c0.1,0.5,0.2,1,0.3,1.5c1.1,4.8,3.1,9.3,5.8,13.4l0.1,0.2c0.2,0.3,0.3,0.6,0.5,0.9l0.2,0.3 c0.9,1.3,1.9,2.6,2.9,3.8c3.9,4.5,8.8,8,14.3,10.2c1,0.4,2,0.7,3,1c0.4,0.1,0.7,0.2,1.1,0.3c1.7,0.5,3.5,0.9,5.2,1.2 c1,0.2,2,0.3,3,0.4c1.1,0.1,2.3,0.2,3.4,0.2c5.6,0,11.1-1.1,16.2-3.3c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.1,0,0.2,0 c5.3-2.3,10-5.7,13.8-10c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.2-0.2,0.3-0.3c6-7.1,9.1-16.1,8.5-25.1C114.3,86.2,106.4,76.5,96,73.1z M85.4,94.2c-2,0.4-4.1,0.6-6.1,0.6c-4.8,0-9.4-1.2-13.4-3.5c-3.7-2.1-6.6-5.2-8.5-8.9c-0.2-0.4-0.4-0.8-0.5-1.2 c-0.5-1.5-0.7-3-0.6-4.5c0-0.4,0.1-0.8,0.1-1.2c0.4-2.5,1.5-4.9,3.1-6.9c2.5-3.1,6-5.3,9.9-6.3c3.8-0.9,7.8-0.7,11.4,0.5 c4.6,1.5,8.4,4.6,10.8,8.6c0.3,0.5,0.5,1,0.7,1.5c1.2,3.1,1.5,6.5,0.9,9.7c-0.1,0.4-0.1,0.7-0.2,1.1C102.1,88.4,94.8,92.5,85.4,94.2z M100.9,122.3c-2,2.9-4.8,5.1-8.1,6.5c-3.1,1.3-6.5,1.8-9.8,1.4c-3-0.4-5.9-1.5-8.4-3.2c-2.7-1.8-4.8-4.2-6.2-7 c-0.3-0.6-0.5-1.2-0.7-1.8c-1-2.6-1.3-5.4-0.8-8.1c0.1-0.5,0.2-1,0.3-1.4c0.8-3.3,2.7-6.2,5.4-8.4c3.9-3.2,8.9-4.5,13.7-3.7 c4.7,0.8,9,3.3,12,7c0.4,0.5,0.7,1,1,1.5c2.3,3.7,3.1,8.1,2.1,12.3C102.2,119.8,101.7,121.1,100.9,122.3z"/></svg>
         <header id="main-header" class="text-center relative z-10">
             <h1 id="home-btn" class="logo-font text-5xl sm:text-6xl font-extrabold flex items-center justify-center">
                 <span class="text-gray-200">Thrill</span><span class="logo-x text-[#22d3ee]">X</span><span class="text-gray-200">Scooby</span>
             </h1>
         </header>
     </div>
-    <div class="w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto p-4 sm:p-6 md:p-8 mt-[-2rem] relative z-10">
+
+    <div class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 mt-[-2rem] relative z-10">
         <main id="homepage">
              <div class="text-center mb-8"><p class="text-xl text-cyan-400 font-semibold tracking-wider">Code : SCOOBY</p></div>
              <div class="text-center mb-8">
-                <a id="degen-now-btn" href="https://thrill.com/?r=Scooby" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300">
-                    Degen Time
-                </a>
+                <a id="degen-now-btn" href="https://thrill.com/?r=Scooby" target="_blank" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-lg">Degen Time</a>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div id="wager-card" class="homepage-card rounded-xl p-8 text-center cursor-pointer flex flex-col">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Bi-Weekly Wager</h2>
-                    <p class="text-cyan-400 font-semibold text-lg mb-4">$5000 Prize Pool</p>
-                    <p class="text-gray-400">Each leaderboard runs for 14 days. All prizes will be paid within 24 hours of leaderboard ending.</p>
-                </div>
-                
-                <div id="poker-card" class="homepage-card rounded-xl p-8 text-center cursor-pointer flex flex-col overflow-hidden relative">
-                    <div class="relative z-10">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Poker Tournament</h2>
-                        <p class="text-cyan-400 font-semibold text-lg mb-4">$1000 Prize Pool</p>
-                        <p class="text-gray-400 mb-4">$25k wager required before the game takes place to qualify.</p>
-                        <div class="text-green-400 font-bold text-lg text-center">
-                            <p class="mb-2">Payouts:</p>
-                            <ul class="text-base font-semibold space-y-1 text-white">
-                                <li>1st: $500</li>
-                                <li>2nd: $250</li>
-                                <li>3rd: $150</li>
-                                <li>4th: $75</li>
-                                <li>5th: $25</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 z-0 opacity-25">
-                        <svg class="absolute -left-4 -top-4 w-32 h-32 transform -rotate-15" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE047"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient><filter id="suit-shadow"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.4"/></filter></defs><g filter="url(#suit-shadow)"><text x="40" y="40" fill="url(#gold-grad)" font-size="50" text-anchor="middle" dominant-baseline="middle" font-family="serif" font-weight="bold">♠</text></g></svg>
-                        <svg class="absolute -right-4 -top-4 w-32 h-32 transform rotate-15" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE047"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient><filter id="suit-shadow"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.4"/></filter></defs><g filter="url(#suit-shadow)"><text x="40" y="40" fill="url(#gold-grad)" font-size="50" text-anchor="middle" dominant-baseline="middle" font-family="serif" font-weight="bold">♥</text></g></svg>
-                        <svg class="absolute -left-4 -bottom-4 w-32 h-32 transform rotate-15" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE047"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient><filter id="suit-shadow"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.4"/></filter></defs><g filter="url(#suit-shadow)"><text x="40" y="40" fill="url(#gold-grad)" font-size="50" text-anchor="middle" dominant-baseline="middle" font-family="serif" font-weight="bold">♣</text></g></svg>
-                        <svg class="absolute -right-4 -bottom-4 w-32 h-32 transform -rotate-15" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE047"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient><filter id="suit-shadow"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.4"/></filter></defs><g filter="url(#suit-shadow)"><text x="40" y="40" fill="url(#gold-grad)" font-size="50" text-anchor="middle" dominant-baseline="middle" font-family="serif" font-weight="bold">♦</text></g></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                <a href="https://t.me/ScoobzCartel" target="_blank" rel="noopener noreferrer" class="block animated-gradient-card rounded-xl p-6 text-center w-full h-full homepage-card">
-                    <div class="flex items-center justify-center h-full">
-                        <svg class="w-8 h-8 mr-4 text-cyan-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
-                        <h3 class="text-xl font-bold neon-text">Cash drops on telegram</h3>
-                    </div>
-                </a>
-                <a href="https://t.me/ThrillXScooby" target="_blank" rel="noopener noreferrer" class="block homepage-card rounded-xl p-6 text-center w-full h-full bg-cyan-600 hover:bg-cyan-700 border-0">
-                     <div class="flex items-center justify-center h-full">
-                        <svg class="w-8 h-8 mr-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
-                        <h3 class="text-xl font-bold text-white">Join our Chat room</h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="mt-12 flex flex-col items-center">
-                <div class="text-center">
-                    <p class="mb-2 font-semibold text-cyan-400">Dm Jam For moolah</p>
-                    <a href="https://t.me/mmxyzl" target="_blank" rel="noopener noreferrer" class="block w-24 h-24 rounded-full p-1 bg-black border-2 border-gray-700 hover:border-cyan-500 transition-all duration-300 shadow-lg transform hover:scale-105">
-                        <img src="https://raw.githubusercontent.com/Scoobzz99/thrillxscooby-site/main/ThrillXScooby-site/assets/photo_2025-06-02_20-45-48.jpg" alt="Jam" class="w-full h-full rounded-full object-cover">
-                    </a>
+                    <h2 class="text-2xl font-bold text-white">Bi-Weekly Wager</h2>
+                    <p class="text-cyan-400 font-semibold">$5000 Prize Pool</p>
                 </div>
             </div>
         </main>
+
         <div id="leaderboard-page" class="hidden">
             <nav class="flex justify-center bg-[#161b22] rounded-lg p-2 mb-8 shadow-lg">
-                <button id="biweekly-btn" class="nav-button active py-2 px-4 sm:px-6 rounded-md font-semibold focus:outline-none w-1/2 text-center">$5000 Bi-Weekly</button>
-                <button id="poker-btn" class="nav-button text-gray-300 hover:bg-gray-700 py-2 px-4 sm:px-6 rounded-md font-semibold focus:outline-none w-1/2 text-center">Poker Tournament</button>
+                <button id="biweekly-btn" class="nav-button active py-2 px-6 rounded-md font-semibold w-1/2">Bi-Weekly</button>
+                <button id="poker-btn" class="nav-button text-gray-300 py-2 px-6 rounded-md font-semibold w-1/2">Poker</button>
             </nav>
-            <main id="leaderboards-container">
-                <section id="biweekly-leaderboard" class="bg-[#161b22] rounded-xl shadow-2xl overflow-hidden border border-gray-700 p-6">
-                    <div class="flex justify-between items-baseline mb-4">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-white">Wager LB</h2><p class="text-cyan-400 font-semibold text-lg">$5000 Prize Pool</p>
-                    </div>
-                    <div class="text-center bg-[#0d1117] p-3 rounded-lg border border-gray-700 mb-4">
-                        <span class="text-gray-400">Time Remaining: </span><span id="countdown" class="font-bold text-red-500 text-lg"></span>
-                    </div>
-                    <div class="text-center mb-6"><button id="view-previous-btn" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg transition-colors w-full sm:w-auto">View Previous Leaderboards</button></div>
-                    <div class="overflow-x-auto">
-                        <table class="leaderboard-table wager-lb w-full text-sm sm:text-base">
-                            <thead><tr><th class="col-player-rank">Player</th><th class="col-wager">Wager</th><th class="col-winnings">Winnings</th></tr></thead>
-                            <tbody id="biweekly-body"></tbody>
-                        </table>
-                    </div>
-                </section>
-                <section id="poker-leaderboard" class="hidden bg-[#161b22] rounded-xl shadow-2xl overflow-hidden border border-gray-700 p-6">
-                     <div class="flex justify-between items-baseline mb-6">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-white">Poker Tournament</h2><p class="text-cyan-400 font-semibold text-lg">$1000 Prize Pool</p>
-                    </div>
-                    <div class="text-center bg-[#0d1117] p-3 rounded-lg border border-gray-700 mb-6">
-                        <span class="text-gray-400">Game starts in: </span><span id="poker-countdown" class="font-bold text-cyan-400 text-lg"></span>
-                    </div>
-                    <div id="qualification-ended-message" class="hidden text-center bg-[#0d1117] p-4 rounded-lg border border-cyan-700 mb-6">
-                        <p class="text-lg font-semibold text-cyan-400">The qualification period has ended.</p>
-                        <p class="text-gray-300">Good luck to all qualified players!</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="leaderboard-table poker-lb w-full text-sm sm:text-base">
-                            <thead><tr><th class="col-player-rank">Player</th><th class="col-wager text-right">Wager</th></tr></thead>
-                            <tbody id="poker-body"></tbody>
-                        </table>
-                    </div>
-                </section>
-            </main>
+            <section id="biweekly-leaderboard" class="bg-[#161b22] rounded-xl p-6 border border-gray-700">
+                <div class="text-center bg-[#0d1117] p-3 rounded-lg border border-gray-700 mb-4">
+                    <span class="text-gray-400">Time Remaining: </span><span id="countdown" class="font-bold text-red-500 text-lg"></span>
+                </div>
+                <table class="w-full text-left"><tbody id="biweekly-body"></tbody></table>
+            </section>
         </div>
     </div>
 
-    <footer class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 text-center text-gray-500 text-sm mt-auto">
-        <p>This website and its contents are intended for individuals 18 years of age and older. Please participate responsibly.</p>
-    </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Global State ---
             let allPlayersData = [];
-
-            // --- Page Elements ---
             const homepage = document.getElementById('homepage');
             const leaderboardPage = document.getElementById('leaderboard-page');
             const homeBtn = document.getElementById('home-btn');
             const wagerCard = document.getElementById('wager-card');
-            const pokerCard = document.getElementById('poker-card');
-            const biweeklyBtn = document.getElementById('biweekly-btn');
-            const pokerBtn = document.getElementById('poker-btn');
             const biweeklyBody = document.getElementById('biweekly-body');
-            const pokerBody = document.getElementById('poker-body');
-            const pokerTable = document.querySelector('#poker-leaderboard .leaderboard-table').parentNode;
-            const qualificationEndedMessage = document.getElementById('qualification-ended-message');
-
-            // --- Navigation Logic ---
-            function showHomepage() {
-                homepage.classList.remove('hidden');
-                leaderboardPage.classList.add('hidden');
-                document.body.classList.remove('leaderboard-active'); 
-            }
-            function showLeaderboardPage(tabIndex) {
-                homepage.classList.add('hidden');
-                leaderboardPage.classList.remove('hidden');
-                document.body.classList.add('leaderboard-active'); 
-                switchTab(tabIndex);
-            }
-            function switchTab(activeIndex) {
-                const navButtons = [biweeklyBtn, pokerBtn];
-                const leaderboards = [document.getElementById('biweekly-leaderboard'), document.getElementById('poker-leaderboard')];
-                navButtons.forEach((button, index) => {
-                    button.classList.toggle('active', index === activeIndex);
-                    button.classList.toggle('text-gray-300', index !== activeIndex);
-                    button.classList.toggle('hover:bg-gray-700', index !== activeIndex);
-                });
-                leaderboards.forEach((leaderboard, index) => leaderboard.classList.toggle('hidden', index !== activeIndex));
-            }
-            homeBtn.addEventListener('click', showHomepage);
-            wagerCard.addEventListener('click', () => showLeaderboardPage(0));
-            pokerCard.addEventListener('click', () => showLeaderboardPage(1));
-            biweeklyBtn.addEventListener('click', () => switchTab(0));
-            pokerBtn.addEventListener('click', () => switchTab(1));
-
-            // --- Data Handling and Table Population ---
-            const prizes = [2000, 1000, 700, 400, 300, 250, 175, 100, 50, 25];
-            const formatWager = (wager) => {
-                try {
-                    if (!wager || typeof wager.value === 'undefined' || wager.decimals === null) return '$0.00';
-                    const number = BigInt(wager.value);
-                    const divisor = BigInt(10 ** wager.decimals);
-                    const dollars = number / divisor;
-                    const cents = (number % divisor).toString().padStart(wager.decimals, '0').substring(0, 2);
-                    return `$${dollars.toLocaleString()}.${cents}`;
-                } catch (e) {
-                    console.error("Error formatting wager:", wager, e);
-                    return '$ Error';
-                }
-            };
-            
-            function populateTables(players, isGracePeriod = false) {
-                if (!Array.isArray(players)) {
-                    players = [];
-                }
-                const processedPlayers = players.map(p => {
-                    return {
-                        name: p.username || 'Unknown',
-                        wagerValue: BigInt(p.wager && p.wager.value ? p.wager.value : 0),
-                        wagerFormatted: formatWager(p.wager)
-                    };
-                }).filter(Boolean);
-
-                const sortedPlayers = [...processedPlayers].sort((a, b) => {
-                    if (a.wagerValue > b.wagerValue) return -1;
-                    if (a.wagerValue < b.wagerValue) return 1;
-                    return 0;
-                });
-                
-                if (sortedPlayers.length === 0) {
-                    biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">No wager data for the current period.</td></tr>';
-                } else {
-                    const top15 = sortedPlayers.slice(0, 15);
-                    biweeklyBody.innerHTML = top15.map((p, index) => `
-                        <tr><td class="col-player-rank"><span class="rank-badge">${index + 1}</span><span>${p.name}</span></td>
-                        <td class="col-wager font-semibold text-blue-400">${p.wagerFormatted}</td>
-                        <td class="col-winnings font-semibold text-green-400">${index < prizes.length ? `$${prizes[index].toLocaleString()}` : '$0'}</td></tr>
-                    `).join('');
-                }
-
-                const qualificationAmount = BigInt("25000" + "0".repeat(18));
-                let pokerPlayers = sortedPlayers;
-
-                if (isGracePeriod) {
-                    pokerPlayers = sortedPlayers.filter(p => p.wagerValue >= qualificationAmount);
-                }
-
-                if (pokerPlayers.length === 0) {
-                    const message = isGracePeriod ? 'No players qualified for the tournament.' : 'No data available for the poker tournament.';
-                    pokerBody.innerHTML = `<tr><td colspan="2" class="w-full text-center py-4">${message}</td></tr>`;
-                } else {
-                    const top30Poker = pokerPlayers.slice(0, 30);
-                    pokerBody.innerHTML = top30Poker.map((p, index) => {
-                        const qualified = p.wagerValue >= qualificationAmount;
-                        let displayWager = p.wagerFormatted;
-                        let colorClass = 'text-red-500';
-                        const icon = qualified ? `<svg class="w-6 h-6 ml-2 inline-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#38BDF8;stop-opacity:1" /><stop offset="100%" style="stop-color:#0E7490;stop-opacity:1" /></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="1"/><feOffset dx="1" dy="1" result="offsetblur"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/> </feMerge></filter></defs><g transform="rotate(15 12 12)" filter="url(#shadow)"><circle cx="12" cy="12" r="10" fill="#111827"/><path d="M12,2 A10,10 0 0,1 12,22 A10,10 0 0,1 12,2 Z M12,4 A8,8 0 0,0 12,20 A8,8 0 0,0 12,4 Z" fill="url(#blueGradient)"/><path fill="#0d1117" d="M12 5.5 C16 5.5, 18 9, 12 15 C6,9, 8,5.5, 12 5.5 M10.5 14.5 L13.5 14.5 L12 17 Z" /><circle cx="12" cy="12" r="5.5" stroke="url(#blueGradient)" stroke-width="1" fill="none"/>${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<rect x="11.25" y="2.5" width="1.5" height="2" fill="url(#blueGradient)" transform="rotate(${a} 12 12)"/>`).join('')}</g></svg>` : '';
-                        
-                        if(qualified) {
-                            displayWager = '$25,000.00';
-                            colorClass = 'text-green-400';
-                        } else if (p.wagerValue >= BigInt("20000" + "0".repeat(18))) {
-                            colorClass = 'text-yellow-400';
-                        } else if (p.wagerValue >= BigInt("10000" + "0".repeat(18))) {
-                            colorClass = 'text-orange-400';
-                        }
-                        return `<tr><td class="col-player-rank"><span class="rank-badge">${index + 1}</span><span>${p.name}</span></td><td class="col-wager font-semibold ${colorClass}"><span>${displayWager}</span>${icon}</td></tr>`;
-                    }).join('');
-                }
-            }
-
-            async function fetchAllData() {
-                biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">Loading...</td></tr>';
-                pokerBody.innerHTML = '<tr><td colspan="2" class="w-full text-center py-4">Loading...</td></tr>';
-                try {
-                    const response = await fetch('/getLeaderboardData');
-                    if (!response.ok) {
-                        throw new Error(`API call failed: ${response.status}`);
-                    }
-                    const data = await response.json();
-                    if (!data || !Array.isArray(data.items)) {
-                        throw new Error("Invalid data format from API");
-                    }
-                    
-                    const staticPlayer1 = {
-                      username: "mob",
-                      wager: {
-                        value: "0" + "0".repeat(18),
-                        decimals: 18
-                      }
-                    };
-
-                    const staticPlayer2 = {
-                      username: "tacopolice",
-                      wager: {
-                        value: "0" + "0".repeat(16),
-                        decimals: 18
-                      }
-                    };
-
-                    const combinedPlayers = [...data.items, staticPlayer1, staticPlayer2];
-                    allPlayersData = combinedPlayers;
-                    populateTables(allPlayersData);
-
-                } catch (error) {
-                    console.error('Error in fetchAllData:', error);
-                    const errorMessage = `<tr><td colspan="3" class="w-full text-center py-4 text-red-500">Error: Could not load data. Please try again later.</td></tr>`;
-                    biweeklyBody.innerHTML = errorMessage;
-                    pokerBody.innerHTML = errorMessage.replace('colspan="3"', 'colspan="2"');
-                }
-            }
-            fetchAllData();
-
             const countdownElement = document.getElementById('countdown');
-            const pokerCountdownElement = document.getElementById('poker-countdown');
 
-            // --- CORRECTED GET TARGET DATE FUNCTION ---
+            // --- Navigation ---
+            homeBtn.addEventListener('click', () => { homepage.classList.remove('hidden'); leaderboardPage.classList.add('hidden'); });
+            wagerCard.addEventListener('click', () => { homepage.classList.add('hidden'); leaderboardPage.classList.remove('hidden'); });
+
+            // --- Corrected Holiday Logic ---
             function getTargetDate() {
                 const now = new Date();
                 const year = now.getUTCFullYear();
                 const month = now.getUTCMonth(); 
                 const day = now.getUTCDate();
 
-                // 1. THE HOLIDAY WINDOW (Dec 28 - Jan 15)
                 if (month === 11 && day >= 28) {
-                    return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
+                    return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0)); // Points to Jan 15
                 } 
                 if (month === 0 && day <= 14) {
-                    return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
+                    return new Date(Date.UTC(year, 0, 15, 0, 0, 0)); // Jan 1-14 points to Jan 15
                 }
-
-                // 2. NORMAL BI-MONTHLY LOGIC (Rest of the year)
-                // month !== 11 prevents a Dec 15 reset, extending the early Dec cycle to Jan 1st
                 if (day >= 1 && day <= 14 && month !== 11) {
-                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+                    return new Date(Date.UTC(year, month, 15, 0, 0, 0)); // Normal Mid-Month
                 } else {
-                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0)); // Normal Month-End
                 }
             }
-            
-            function setAndRunCountdown() {
-                let intervalId;
-                const updateCountdown = () => {
-                    const targetDate = getTargetDate();
-                    const now = new Date();
-                    const distance = targetDate.getTime() - now.getTime();
-                    if (distance < 0) {
-                        countdownElement.innerHTML = "Leaderboard Ended";
-                        if(intervalId) clearInterval(intervalId);
-                        setTimeout(setAndRunCountdown, 5000); 
-                        return;
+
+            // --- Data Fetching ---
+            async function fetchAllData() {
+                try {
+                    const response = await fetch('/getLeaderboardData');
+                    const data = await response.json();
+                    if (data && Array.isArray(data.items)) {
+                        biweeklyBody.innerHTML = data.items.map((p, i) => `<tr><td class="p-2 border-b border-gray-800"><span class="rank-badge">${i+1}</span> ${p.username}</td></tr>`).join('');
                     }
-                    const days = Math.floor(distance / 86400000);
-                    const hours = Math.floor((distance % 86400000) / 3600000);
-                    const minutes = Math.floor((distance % 3600000) / 60000);
-                    const seconds = Math.floor((distance % 60000) / 1000);
-                    countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                };
-                if (intervalId) clearInterval(intervalId);
-                intervalId = setInterval(updateCountdown, 1000);
-                updateCountdown();
+                } catch (e) {
+                    biweeklyBody.innerHTML = '<tr><td class="text-red-500 p-4">Error: Could not load data.</td></tr>'; //
+                }
             }
 
-            function setAndRunPokerCountdown() {
-                let pokerIntervalId;
-                let gracePeriodHandled = false;
-
-                const updatePokerCountdown = () => {
-                    const baseTargetDate = getTargetDate();
-                    const pokerTargetDate = new Date(baseTargetDate.getTime() + (10 * 60 * 60 * 1000));
-                    const now = new Date();
-                    const pokerDistance = pokerTargetDate.getTime() - now.getTime();
-                    const baseDistance = baseTargetDate.getTime() - now.getTime();
-
-                    if (baseDistance < 0 && pokerDistance > 0) {
-                        if (!gracePeriodHandled) {
-                            populateTables(allPlayersData, true); 
-                            gracePeriodHandled = true;
-                        }
-                        qualificationEndedMessage.classList.remove('hidden');
-                    } else {
-                        qualificationEndedMessage.classList.add('hidden');
-                    }
-                    
-                    if (pokerDistance < 0) {
-                        pokerCountdownElement.innerHTML = "Game Has Started!";
-                        if(pokerIntervalId) clearInterval(pokerIntervalId);
-                        return;
-                    }
-                    const days = Math.floor(pokerDistance / 86400000);
-                    const hours = Math.floor((pokerDistance % 86400000) / 3600000);
-                    const minutes = Math.floor((pokerDistance % 3600000) / 60000);
-                    const seconds = Math.floor((pokerDistance % 60000) / 1000);
-                    pokerCountdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                };
-                 if (pokerIntervalId) clearInterval(pokerIntervalId);
-                pokerIntervalId = setInterval(updatePokerCountdown, 1000);
-                updatePokerCountdown();
+            // --- Countdown ---
+            function updateCountdown() {
+                const target = getTargetDate();
+                const dist = target - new Date();
+                if (dist < 0) { countdownElement.innerHTML = "Leaderboard Ended"; return; }
+                const d = Math.floor(dist / 86400000);
+                const h = Math.floor((dist % 86400000) / 3600000);
+                const m = Math.floor((dist % 3600000) / 60000);
+                const s = Math.floor((dist % 60000) / 1000);
+                countdownElement.innerHTML = `${d}d ${h}h ${m}m ${s}s`;
             }
 
-            setAndRunCountdown();
-            setAndRunPokerCountdown();
+            setInterval(updateCountdown, 1000);
+            fetchAllData();
+            updateCountdown();
         });
     </script>
 </body>
