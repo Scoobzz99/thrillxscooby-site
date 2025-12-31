@@ -451,11 +451,27 @@ function getTargetDate() {
     const month = now.getUTCMonth(); // Jan is 0, Dec is 11
     const day = now.getUTCDate();
 
-    // 1. THE HOLIDAY WINDOW (Dec 28 - Jan 15)
-    // Starts Dec 28
+    // 1. THE LONG HOLIDAY CYCLE (Dec 28 - Jan 15)
     if (month === 11 && day >= 28) {
+        // From Dec 28-31, point to Jan 15 of next year
         return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
     } 
+    
+    if (month === 0 && day <= 14) {
+        // From Jan 1-14, point to Jan 15 of current year
+        return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
+    }
+
+    // 2. NORMAL LOGIC (Modified to exclude the start of December)
+    if (day >= 1 && day <= 14 && month !== 11) {
+        // Target the 15th of the month (Standard routine, skipped in Dec)
+        return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+    } else {
+        // Target the 1st of the next month
+        // This will handle Dec 1st through Dec 27th by pointing to Jan 1st
+        return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+    }
+}
     // Ends Jan 15
     if (month === 0 && day <= 14) {
         return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
@@ -535,6 +551,7 @@ function getTargetDate() {
     </script>
 </body>
 </html>
+
 
 
 
