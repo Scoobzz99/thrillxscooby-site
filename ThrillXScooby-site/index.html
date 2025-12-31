@@ -123,25 +123,24 @@
         /* UPDATED ANIMATION FOR DEGEN BUTTON */
         #degen-now-btn {
             animation: pulse-glow 2.5s ease-in-out infinite;
-            border: 2px solid rgba(34, 211, 238, 0.5); /* Changed to blue */
+            border: 2px solid rgba(34, 211, 238, 0.5); 
             transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
         }
         #degen-now-btn:hover {
             animation-play-state: paused;
             transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(34, 211, 238, 1), 0 0 45px rgba(34, 211, 238, 0.8); /* Changed to blue */
+            box-shadow: 0 0 30px rgba(34, 211, 238, 1), 0 0 45px rgba(34, 211, 238, 0.8); 
         }
         @keyframes pulse-glow {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); /* Changed to blue */
+                box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); 
             }
             50% {
                 transform: scale(1.05);
-                box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 40px rgba(34, 211, 238, 0.7); /* Changed to blue */
+                box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 40px rgba(34, 211, 238, 0.7); 
             }
         }
-
 
         @media (max-width: 768px) { .character { width: 35%; opacity: 0.5; } .character.scooby { left: -10%; } .logo-font { font-size: 3rem; } }
         @media (max-width: 480px) { .character { width: 40%; opacity: 0.3; } .character.scooby { left: -15%; } .leaderboard-table th, .leaderboard-table td { padding: 0.75rem; font-size: 0.875rem; } }
@@ -160,7 +159,6 @@
         <main id="homepage">
              <div class="text-center mb-8"><p class="text-xl text-cyan-400 font-semibold tracking-wider">Code : SCOOBY</p></div>
              <div class="text-center mb-8">
-                <!-- MODIFIED DEGEN NOW BUTTON -->
                 <a id="degen-now-btn" href="https://thrill.com/?r=Scooby" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300">
                     Degen Time
                 </a>
@@ -198,16 +196,13 @@
                 </div>
             </div>
 
-            <!-- NEW LAYOUT FOR CARDS -->
             <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                <!-- Cash Drops Card -->
                 <a href="https://t.me/ScoobzCartel" target="_blank" rel="noopener noreferrer" class="block animated-gradient-card rounded-xl p-6 text-center w-full h-full homepage-card">
                     <div class="flex items-center justify-center h-full">
                         <svg class="w-8 h-8 mr-4 text-cyan-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
                         <h3 class="text-xl font-bold neon-text">Cash drops on telegram</h3>
                     </div>
                 </a>
-                <!-- Join our Chat Room Card -->
                 <a href="https://t.me/ThrillXScooby" target="_blank" rel="noopener noreferrer" class="block homepage-card rounded-xl p-6 text-center w-full h-full bg-cyan-600 hover:bg-cyan-700 border-0">
                      <div class="flex items-center justify-center h-full">
                         <svg class="w-8 h-8 mr-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-1.37.2-1.64l16.46-6.1c.89-.33 1.65.24 1.38 1.31l-4.39 15.61c-.33 1.13-1.31 1.4-2.1.82l-4.73-3.45-2.28 2.2c-.28.28-.79.42-1.11.22z"/></svg>
@@ -268,7 +263,6 @@
         </div>
     </div>
 
-    <!-- NEW FOOTER SECTION -->
     <footer class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 text-center text-gray-500 text-sm mt-auto">
         <p>This website and its contents are intended for individuals 18 years of age and older. Please participate responsibly.</p>
     </footer>
@@ -295,12 +289,12 @@
             function showHomepage() {
                 homepage.classList.remove('hidden');
                 leaderboardPage.classList.add('hidden');
-                document.body.classList.remove('leaderboard-active'); // For logo hover
+                document.body.classList.remove('leaderboard-active'); 
             }
             function showLeaderboardPage(tabIndex) {
                 homepage.classList.add('hidden');
                 leaderboardPage.classList.remove('hidden');
-                document.body.classList.add('leaderboard-active'); // For logo hover
+                document.body.classList.add('leaderboard-active'); 
                 switchTab(tabIndex);
             }
             function switchTab(activeIndex) {
@@ -353,7 +347,6 @@
                     return 0;
                 });
                 
-                // Populate Bi-Weekly Table
                 if (sortedPlayers.length === 0) {
                     biweeklyBody.innerHTML = '<tr><td colspan="3" class="w-full text-center py-4">No wager data for the current period.</td></tr>';
                 } else {
@@ -365,7 +358,6 @@
                     `).join('');
                 }
 
-                // Populate Poker Table
                 const qualificationAmount = BigInt("25000" + "0".repeat(18));
                 let pokerPlayers = sortedPlayers;
 
@@ -428,8 +420,6 @@
 
                     const combinedPlayers = [...data.items, staticPlayer1, staticPlayer2];
                     allPlayersData = combinedPlayers;
-                    
-                    // Initial population of the tables
                     populateTables(allPlayersData);
 
                 } catch (error) {
@@ -441,35 +431,33 @@
             }
             fetchAllData();
 
-            // --- Countdown Timer ---
             const countdownElement = document.getElementById('countdown');
             const pokerCountdownElement = document.getElementById('poker-countdown');
 
-function getTargetDate() {
-    const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = now.getUTCMonth(); 
-    const day = now.getUTCDate();
+            // --- CORRECTED GET TARGET DATE FUNCTION ---
+            function getTargetDate() {
+                const now = new Date();
+                const year = now.getUTCFullYear();
+                const month = now.getUTCMonth(); 
+                const day = now.getUTCDate();
 
-    // 1. THE HOLIDAY WINDOW (Dec 28 - Jan 15)
-    if (month === 11 && day >= 28) {
-        // If Dec 28-31, target Jan 15 of next year
-        return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
-    } 
-    if (month === 0 && day <= 14) {
-        // If Jan 1-14, target Jan 15 of current year
-        return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
-    }
+                // 1. THE HOLIDAY WINDOW (Dec 28 - Jan 15)
+                if (month === 11 && day >= 28) {
+                    return new Date(Date.UTC(year + 1, 0, 15, 0, 0, 0));
+                } 
+                if (month === 0 && day <= 14) {
+                    return new Date(Date.UTC(year, 0, 15, 0, 0, 0));
+                }
 
-    // 2. NORMAL LOGIC (Rest of the year)
-    if (day >= 1 && day <= 14) {
-        // Target the 15th of the current month
-        return new Date(Date.UTC(year, month, 15, 0, 0, 0));
-    } else {
-        // Target the 1st of the next month
-        return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
-    }
-}          
+                // 2. NORMAL BI-MONTHLY LOGIC (Rest of the year)
+                // month !== 11 prevents a Dec 15 reset, extending the early Dec cycle to Jan 1st
+                if (day >= 1 && day <= 14 && month !== 11) {
+                    return new Date(Date.UTC(year, month, 15, 0, 0, 0));
+                } else {
+                    return new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
+                }
+            }
+            
             function setAndRunCountdown() {
                 let intervalId;
                 const updateCountdown = () => {
@@ -504,10 +492,9 @@ function getTargetDate() {
                     const pokerDistance = pokerTargetDate.getTime() - now.getTime();
                     const baseDistance = baseTargetDate.getTime() - now.getTime();
 
-                    // Logic for the 10-hour grace period
                     if (baseDistance < 0 && pokerDistance > 0) {
                         if (!gracePeriodHandled) {
-                            populateTables(allPlayersData, true); // Repopulate poker table with only qualified players
+                            populateTables(allPlayersData, true); 
                             gracePeriodHandled = true;
                         }
                         qualificationEndedMessage.classList.remove('hidden');
@@ -537,11 +524,3 @@ function getTargetDate() {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
